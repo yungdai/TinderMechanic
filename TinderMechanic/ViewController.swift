@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     
     // global variable declarations
     var xFromCenter:CGFloat = 0
-    var label:UILabel!
+//    var label:UILabel!
     var imageView:UIImageView!
     
 
@@ -74,7 +74,7 @@ class ViewController: UIViewController {
         // stretch the view
         var stretch:CGAffineTransform = CGAffineTransformScale(rotation, scale, scale)
         // stretch the label/image
-        imageView.transform = stretch
+//        imageView.transform = stretch
         // check whether or not someone is chosen
         if profile.center.x < 100 {
             println("not chosen")
@@ -94,10 +94,10 @@ class ViewController: UIViewController {
             rotation = CGAffineTransformMakeRotation(0)
             
             // stretch the current view back to normal
-            stretch = CGAffineTransformScale(rotation, scale, scale)
+//            stretch = CGAffineTransformScale(rotation, scale, scale)
             
             // set the label or image to the original size after scaling
-            imageView.frame = CGRectMake(self.view.bounds.width / 2 - 100, self.view.bounds.height / 2 - 50, 200, 100)
+            imageView.frame = CGRectMake(self.view.bounds.width / 2 - 100, self.view.bounds.height / 2 - 100, 200, 200)
         }
         
     }
