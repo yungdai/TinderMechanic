@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>92AE4D73-2378-4FDB-97B4-6A2FE4D55D6E</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>TinderMechanic</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>E6CA70FC7F0C5C87EF5544E569C1AFEF23B88103</key>
 		<string>https://github.com/yungdai/TinderMechanic.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>TinderMechanic.xcodeproj/project.xcworkspace</string>
+	<string>TinderMechanic.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>E6CA70FC7F0C5C87EF5544E569C1AFEF23B88103</key>
