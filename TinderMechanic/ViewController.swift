@@ -15,13 +15,13 @@ class ViewController: UIViewController {
     
     // enumeration of states
     
-    enum CardSelectionState {
+    enum CardSelectionState:String {
         
-        case NoSelection
-        case SwipingLeft
-        case SwipedLeft
-        case SwipingRight
-        case SwipedRight
+        case NoSelection = "No Selection"
+        case SwipingLeft = "Swiping Left"
+        case SwipedLeft = "Swiped Left"
+        case SwipingRight = "Swiping Right"
+        case SwipedRight = "Swiped Right"
 
     }
     
@@ -41,34 +41,20 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         frame = CGRectZero
-        // Do any additional setup after loading the view, typically from a nib.
         
-        //draw the label on the ViewController
-        /*
-        label = UILabel(frame: CGRectMake(self.view.bounds.width / 2 - 100, self.view.bounds.height / 2 - 50, 200, 100))
-        label.text = "Drag Me"
-        label.textAlignment = NSTextAlignment.Center
-        // add the label as a subView onto the viewcontroller
-        self.view.addSubview(label)
-        
-        // add a gesture recogniser that pans the object
-        var gesture = UIPanGestureRecognizer(target: self, action: Selector("wasDragged:"))
-        
-        // add the gesture to the label
-        label.addGestureRecognizer(gesture)
-        label.userInteractionEnabled = true
-        */
-        
-        
-        
+
+
+
+
+
 //        imageView = UIImageView(frame: CGRectMake(self.view.bounds.width / 2 - 100, self.view.bounds.height / 2 - 100, 200, 200))
 //        // default image for our user
         imageView.image = UIImage(named: "mario.jpg")
 //
 //        // giving the image a circle style
 //        // add a corner radius to our image
-//        imageView.layer.cornerRadius = imageView.frame.size.width / 2
-//        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = imageView.frame.size.width / 2
+        imageView.clipsToBounds = true
 ////        self.view.addSubview(imageView)
 //        
 //        // add the gesture recognizer code
@@ -84,27 +70,34 @@ class ViewController: UIViewController {
     // add a viewDidAppear function for each time the viewDidAppear
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        styleMyViews()
+        styleMyViewsForNewUsers()
         
     }
     
     // add a function to style the views
-    func styleMyViews() {
+    func styleMyViewsForNewUsers() {
         // round the corner on the card
         cardBackgroundView.layer.cornerRadius = 5
+        setupViewForUser()
         
+    }
+    
+    func setupViewForUser() {
+            userName.text = "Hawt Guy"
     }
     
     
     @IBAction func cardWasDragged(sender: UIPanGestureRecognizer) {
         println("The card was dragged")
         
-        
+        if sender.state == UIGestureRecognizerState.Began {
+            frame = sender.view?.frame
+        }
         let translation = sender.translationInView(self.view)
         // get what has been dragged
         var profile = sender.view!
         xFromCenter += translation.x
-        var scale = min(100 / abs(xFromCenter), 1)
+//        var scale = min(100 / abs(xFromCenter), 1)
         
         
         // remove the translation along the Y access so it only moves left and right
@@ -117,9 +110,9 @@ class ViewController: UIViewController {
         // rotate the label/image
         var rotation:CGAffineTransform = CGAffineTransformMakeRotation(translation.x / 200)
         // stretch the view
-        var stretch:CGAffineTransform = CGAffineTransformScale(rotation, scale, scale)
+//        var stretch:CGAffineTransform = CGAffineTransformScale(rotation, scale, scale)
         // stretch the label/image
-        //        imageView.transform = stretch
+//                imageView.transform = stretch
         // check whether or not someone is chosen
         if profile.center.x < 100 {
             println("not chosen")
@@ -142,19 +135,19 @@ class ViewController: UIViewController {
             switch cardSelectionState {
                 
             case .NoSelection:
-                println("No Selecdtion")
+                println("No Selection")
 
             case .SwipingLeft:
-                println("Left swping")
+                println("Left swiping gesture")
 
             case .SwipedLeft:
-                println("Left swiped")
+                println("Left swiped gesture")
  
             case .SwipingRight:
-                println("Right swiping")
+                println("Right swiping gesture")
                 
             case .SwipedRight:
-                println("Right swiped")
+                println("Right swiped gesture")
     
             }
 //            // set the label/image back
@@ -171,8 +164,25 @@ class ViewController: UIViewController {
 //            
             // set the label or image to the original size after scaling
             UIView.animateWithDuration( 0.3, animations: { () -> Void in
-                profile.frame = CGRectMake(self.view.bounds.width / 2 - 100, self.view.bounds.height / 2 - 140, 200, 200)
-                }, completion: { (sucess) -> Void in
+                profile.frame = self.frame
+                }, completion: { (completed) -> Void in
+                    if (completed) {
+                        switch self.cardSelectionState {
+                        case .NoSelection:
+                            println("No selection, something went wrong!")
+                        case .SwipedRight:
+                            println("I liked the person")
+                            self.personIsSelected()
+                        case .SwipedLeft:
+                            println("I didn't like the person")
+                            self.personIsNotSelected()
+                        default:
+                            println("default state of the switch")
+                            
+                        }
+                        
+               
+                    }
                     // once the animation is done, the state of the card is back to .NoSelection
                     self.cardSelectionState = .NoSelection
             })
@@ -181,61 +191,21 @@ class ViewController: UIViewController {
         // TODO: load next image
         
     }
-
-
-    // creating the function for wasDragged that passes in a UIPanGestureRecogniszer
-//    func wasDragged(gesture: UIPanGestureRecognizer) {
-//        let translation = gesture.translationInView(self.view)
-//        // get what has been dragged
-//        var profile = gesture.view!
-//        xFromCenter += translation.x
-//        var scale = min(100 / abs(xFromCenter), 1)
-//        
-//        
-//        // remove the translation along the Y access so it only moves left and right
-//        profile.center = CGPoint(x: profile.center.x + translation.x, y: profile.center.y)
-////        profile.center = CGPoint(x: profile.center.x + translation.x, y: profile.center.y + translation.y)
-//        
-//        // reset translation
-//        gesture.setTranslation(CGPointZero, inView: self.view)
-//        
-//        // rotate the label/image
-//        var rotation:CGAffineTransform = CGAffineTransformMakeRotation(translation.x / 200)
-//        // stretch the view
-//        var stretch:CGAffineTransform = CGAffineTransformScale(rotation, scale, scale)
-//        // stretch the label/image
-////        imageView.transform = stretch
-//        // check whether or not someone is chosen
-//        if profile.center.x < 100 {
-//            println("not chosen")
-//            // do nothing
-//        } else {
-//            println("chosen")
-//            // we could add the chosen user to parse
-//        }
-//        // when the gesture state has ended
-//        if gesture.state == UIGestureRecognizerState.Ended {
-//            // set the label/image back
-//            profile.center = CGPointMake(view.bounds.width / 2, view.bounds.height / 2)
-//            
-//            // undo the scale
-//            scale = max(abs(xFromCenter) / 100, 1)
-//            // undo any rotations
-//            rotation = CGAffineTransformMakeRotation(0)
-//            
-//            // stretch the current view back to normal
-//            stretch = CGAffineTransformScale(rotation, scale, scale)
-//            
-//            
-//            // set the label or image to the original size after scaling
-//            UIView.animateWithDuration( 0.3, animations: { () -> Void in
-//                self.imageView.frame = CGRectMake(self.view.bounds.width / 2, self.view.bounds.height / 2 - 40, profile.frame.size.width, profile.frame.size.height)
-//            }, completion: { (sucess) -> Void in
-//                
-//            })
-//        }
-//        
-//    }
+    
+    func personIsSelected() {
+        println("You've been selected")
+        let popup = UIAlertController(title: "You've been selected", message: "Please selecte me back", preferredStyle: UIAlertControllerStyle.ActionSheet)
+    
+        
+    }
+    
+    func personIsNotSelected() {
+        println("You have not been selected")
+    }
+    
+    func resetCards() {
+        
+    }
 
 }
 
