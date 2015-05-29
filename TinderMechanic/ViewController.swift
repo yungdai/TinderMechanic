@@ -12,10 +12,12 @@ class ViewController: UIViewController {
     
     // global variable declarations
     
+    
+    // enumeration of states
+    
     enum CardSelectionState {
         
         case NoSelection
-        case MakingSelection
         case SwipingLeft
         case SwipedLeft
         case SwipingRight
@@ -142,9 +144,6 @@ class ViewController: UIViewController {
             case .NoSelection:
                 println("No Selecdtion")
 
-            case .MakingSelection:
-                println("Making a selction")
- 
             case .SwipingLeft:
                 println("Left swping")
 
@@ -237,13 +236,6 @@ class ViewController: UIViewController {
 //        }
 //        
 //    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
 
 }
 
